@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 import os
 from configparser import RawConfigParser
+from datetime import datetime
 
 ## Funções:
 def config(filename, section): 
@@ -27,36 +28,53 @@ def config(filename, section):
 site='https://sociotorcedor.com.br/'
 params=config('auth.ini','login')
 user=params['user']
-password=params['password']
+passw=params['password']
+#Pasta com o executável do chromedriver.exe:
+executable_path=params['executable_path'] 
 
-## Abetura do navegador:
+## Abertura do navegador:
+inicio=datetime.now()
 print(f'Iniciando o processo de abertura do navegador...')
-options = webdriver.ChromeOptions() # Tratamento de erro
-options.add_experimental_option('excludeSwitches', ['enable-logging']) # Tratamento de erro
-browser = webdriver.Chrome(options=options) # Tratamento de erro
-print(f'Navegador aberto.')
+### Tratamento de Erros:
+options = webdriver.ChromeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+### Acesso ao navegador:
+try:
+    browser = webdriver.Chrome(options=options)
+except:
+    browser = webdriver.Chrome(options=options,executable_path=executable_path)
+fim=datetime.now()
+print(f'Navegador aberto. Tempo de Execução: {fim-inicio}.')
 
 ## Acesso ao site de login:
 browser.get(site) 
+inicio=datetime.now()
 print(f'Iniciando processo de abertura do site {site}...')
-print(f'{site} acessado com sucesso.')
-time.sleep(10) 
+fim=datetime.now()
+print(f'{site} acessado com sucesso. Tempo de Execução: {fim-inicio}.')
+time.sleep(5) 
 
 ## Login:
-browser.find_element_by_name("mat-input-2/mat-input-element mat-form-field-autofill-control ng-tns-c60-8 ng-pristine ng-valid cdk-text-field-autofill-monitored ng-touched/name of username").send_keys(user)
-time.sleep(30)
-#username = browser.find_element_by_id("matinput")
-#password = browser.find_element_by_id("password")
-#username.send_keys(user)
-#password.send_keys(password)
-#login_attempt = browser.find_element_by_xpath("//*[@type='submit']")
-#login_attempt.submit()
-#ids = browser.find_elements_by_xpath('//*[@class]')
-#for ii in ids:
-    #print ii.tag_name
-    #print(ii.get_attribute('class'))    # id name as string
-
+inicio=datetime.now()
+### Abertura da tela de login:
+try:
+    browser.find_element_by_link_text('LOGIN').click()
+except:
+    print(f'ERRO! Botão de login não pressionado.')    
+print(f'Definição dos parâmetros de login...')
+### Pausa para atualização dos dados:
+time.sleep(5)
+### Definição de usuário:
+browser.find_element_by_id('mat-input-0').send_keys(user)
+### Definição de senha:
+browser.find_element_by_id('mat-input-1').send_keys(passw)
+### Selecionando o botão de login:
+try:
+    browser.find_element_by_xpath("//button[text()=' ENTRAR ']").click()
+    fim=datetime.now()
+    print(f'Login efetuado com sucesso. Tempo de Execução: {fim-inicio}.')
+except:
+    print(f'ERRO! Botão "Logar-se" não pressionado.')  
 
 ## Fechamento do navegador:
-print('Navegador fechado.')
-#browser.close()
+browser.close()

@@ -13,9 +13,10 @@ Antes de executar o código, é necessário garantir que as bibliotecas necessá
 O arquivo auth.ini deve ser no seguinte formato:
 
 [login]
-user='you username'
-password='your password'
+user=your username<br/>
+password=your password<br/>
+executable_path=pasta do chromedriver.exe
 
 ## 3. Ações disponíveis:
 ### 3.1 Login
-Em construção.
+A ação pode ser executada através do *login_st.py* e consiste em passar usuário e senha disponibilizados no arquivo *auth.ini* para realizar login no site.
