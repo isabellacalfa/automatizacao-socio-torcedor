@@ -10,6 +10,7 @@ import time
 import os
 from configparser import RawConfigParser
 from datetime import datetime
+from random import random
 
 ## Funções:
 def config(filename, section): 
@@ -31,6 +32,10 @@ user=params['user']
 passw=params['password']
 #Pasta com o executável do chromedriver.exe:
 executable_path=params['executable_path'] 
+
+## Intervalo de tempo para a abertura do navegador:
+n = random()
+time.sleep(n*100)
 
 ## Abertura do navegador:
 inicio=datetime.now()
@@ -75,6 +80,10 @@ try:
     print(f'Login efetuado com sucesso. Tempo de Execução: {fim-inicio}.')
 except:
     print(f'ERRO! Botão "Logar-se" não pressionado.')  
+
+## Intervalo de tempo para fechar o navegador:
+n = random()
+time.sleep(n*100)
 
 ## Fechamento do navegador:
 browser.close()
