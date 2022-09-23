@@ -6,6 +6,7 @@
 ## Bibliotecas:
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 import time
 import os
 from configparser import RawConfigParser
@@ -63,23 +64,22 @@ time.sleep(5)
 inicio=datetime.now()
 ### Abertura da tela de login:
 try:
-    browser.find_element_by_link_text('LOGIN').click()
+    browser.find_element(By.LINK_TEXT, 'LOGIN').click()
+    time.sleep(5)
+    print(f'Definição dos parâmetros de login...')
+    ### Definição de usuário:
+    browser.find_element(By.ID, 'mat-input-0').send_keys(user)
+    ### Definição de senha:
+    browser.find_element(By.ID, 'mat-input-1').send_keys(passw)
+    ### Selecionando o botão de entrar:
+    try:
+        browser.find_element(By.XPATH, "//button[text()=' ENTRAR ']").click()
+        fim=datetime.now()
+        print(f'Login efetuado com sucesso. Tempo de Execução: {fim-inicio}.')
+    except:
+        print(f'ERRO! Botão "Logar-se" não pressionado.') 
 except:
     print(f'ERRO! Botão de login não pressionado.')    
-print(f'Definição dos parâmetros de login...')
-### Pausa para atualização dos dados:
-time.sleep(5)
-### Definição de usuário:
-browser.find_element_by_id('mat-input-0').send_keys(user)
-### Definição de senha:
-browser.find_element_by_id('mat-input-1').send_keys(passw)
-### Selecionando o botão de login:
-try:
-    browser.find_element_by_xpath("//button[text()=' ENTRAR ']").click()
-    fim=datetime.now()
-    print(f'Login efetuado com sucesso. Tempo de Execução: {fim-inicio}.')
-except:
-    print(f'ERRO! Botão "Logar-se" não pressionado.')  
 
 ## Intervalo de tempo para fechar o navegador:
 n = random()
